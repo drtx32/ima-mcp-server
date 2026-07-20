@@ -1,0 +1,27 @@
+{
+  "name": "ima-mcp-server",
+  "version": "1.0.0",
+  "description": "IMA (ima.qq.com) knowledge base MCP server — search, browse, read, and collect knowledge base content in any MCP-compatible agent.",
+  "type": "module",
+  "main": "server.mjs",
+  "bin": {
+    "ima-mcp-server": "server.mjs"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node -e \"import('./server.mjs').catch(e=>{console.error(e);process.exit(1)})\""
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "ima",
+    "mcp",
+    "knowledge-base",
+    "model-context-protocol"
+  ],
+  "license": "MIT"
+}
