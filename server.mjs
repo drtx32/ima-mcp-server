@@ -402,6 +402,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           text: JSON.stringify(data, null, 2),
         },
       ],
+      // Keep the human-readable text representation for older MCP clients,
+      // but also expose the API payload as native MCP structured content.
+      // Without this field clients have to parse text and may silently lose
+      // fields such as info_list, is_end, and next_cursor.
+      structuredContent: data,
     };
   } catch (err) {
     return {

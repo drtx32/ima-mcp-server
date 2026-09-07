@@ -42,11 +42,11 @@ async function call(apiPath, body) {
   const r = await call("search_knowledge_base", { query: "", cursor: "", limit: 5 });
   console.error("返回 code:", r.code, "| msg:", r.msg || "");
   if (r.code === 0) {
-    const kbList = r.data?.list || [];
+    const kbList = r.data?.info_list || r.data?.list || [];
     console.error("✅ 凭证有效！命中知识库数量:", kbList.length);
-    const out = (r.data?.list || []).map((k) => ({
-      name: k.name || k.title,
-      kb_id: k.knowledge_base_id,
+    const out = kbList.map((k) => ({
+      name: k.kb_name || k.name || k.title,
+      kb_id: k.kb_id || k.knowledge_base_id,
       item_count: k.item_num ?? k.knowledge_num,
       type: k.type,
     }));
@@ -55,12 +55,12 @@ async function call(apiPath, body) {
     console.error("→ 用关键词 '业主' 检索知识库…");
     const r2 = await call("search_knowledge_base", { query: "业主", cursor: "", limit: 10 });
     console.error("返回 code:", r2.code, "| msg:", r2.msg || "");
-    const list2 = r2.data?.list || [];
+    const list2 = r2.data?.info_list || r2.data?.list || [];
     console.error("命中知识库数量:", list2.length);
     if (list2.length > 0) {
       console.log(JSON.stringify(list2.map((k) => ({
-        name: k.name || k.title,
-        kb_id: k.knowledge_base_id,
+        name: k.kb_name || k.name || k.title,
+        kb_id: k.kb_id || k.knowledge_base_id,
         item_count: k.item_num ?? k.knowledge_num,
       })), null, 2));
     }

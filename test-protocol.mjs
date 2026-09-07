@@ -1,8 +1,8 @@
 // 测试脚本：验证 ima-mcp-server 的 MCP 协议通信
 import { spawn } from "child_process";
 
-const NODE = "C:/Users/17116/.workbuddy/binaries/node/versions/22.22.2/node.exe";
-const SERVER = "C:/Users/17116/ima-mcp-server/server.mjs";
+const NODE = process.execPath;
+const SERVER = new URL("./server.mjs", import.meta.url).pathname;
 
 const child = spawn(NODE, [SERVER], { stdio: ["pipe", "pipe", "pipe"] });
 

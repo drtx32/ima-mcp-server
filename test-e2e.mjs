@@ -1,8 +1,8 @@
 // 端到端测试：通过 MCP 协议调用真实 IMA API
 import { spawn } from "child_process";
 
-const NODE = "C:/Users/17116/.workbuddy/binaries/node/versions/22.22.2/node.exe";
-const SERVER = "C:/Users/17116/ima-mcp-server/server.mjs";
+const NODE = process.execPath;
+const SERVER = new URL("./server.mjs", import.meta.url).pathname;
 
 const child = spawn(NODE, [SERVER], { stdio: ["pipe", "pipe", "pipe"] });
 let stdoutBuf = "";
@@ -45,11 +45,11 @@ child.stdout.on("data", (data) => {
         const text = resp.result?.content?.[0]?.text || "";
         try {
           const data = JSON.parse(text);
-          const list = data.searched_knowledge_base_list || data.knowledge_base_list || [];
+          const list = data.info_list || data.list || data.searched_knowledge_base_list || data.knowledge_base_list || [];
           const arr = list.map((i) => i.knowledge_base || i).filter(Boolean);
           console.log(`\n📚 返回 ${arr.length} 个知识库：`);
           arr.forEach((kb, i) => {
-            console.log(`   ${i + 1}. ${kb.title || kb.name} (id: ${kb.knowledge_base_id || kb.id})`);
+            console.log(`   ${i + 1}. ${kb.kb_name || kb.title || kb.name} (id: ${kb.kb_id || kb.knowledge_base_id || kb.id})`);
             if (kb.content_count) console.log(`      内容数: ${kb.content_count}`);
           });
         } catch {
